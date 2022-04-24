@@ -1,0 +1,13 @@
+version: "3"
+services:
+  some_redis:
+    container_name: some_redis
+    image: redis:6.0.16
+    volumes:
+      - ./conf:/usr/local/
+    ports:
+      - "6379:6379"
+    restart: always
+    command: redis-server /usr/local/redis.conf
+
+

@@ -1,0 +1,52 @@
+version: '3'
+services:
+  nginx:
+   container_name: some-nginx
+   image: nginx:1.20
+   restart: always
+   ports:
+   - 80:80
+   - 443:443
+   volumes:
+   - ./nginx/conf.d:/etc/nginx/conf.d
+   depends_on:
+   - app
+ 
+  mysql:
+   container_name: some-mysql
+   image: mysql:5.7
+   environment:
+    - MYSQL_DATABASE=apps
+    - MYSQL_ROOT_PASSWORD=123456
+    #- MYSQL_ROOT_HOST='%'
+   volumes:
+    - ./mysql/conf.d:/etc/mysql/conf.d
+    - /usr/local/mysql/data:/var/lib/mysql
+   ports:
+    - "3306:3306"
+   restart: always
+
+  redis:
+    container_name: some_redis
+    image: redis:5.0.14
+    volumes:
+     - ./redis/data:/data
+    ports:
+     - "6379:6379"
+    restart: always
+  
+  app:
+    restart: always
+    build: ./apps
+    working_dir: /apps
+    volumes:
+      - ./apps:/apps
+      - ~/.m2:/root/.m2
+    expose:
+      - "8080"
+    ports:
+      - "8080:8080"
+    command: mvn clean spring-boot:run
+    depends_on:
+      - mysql
+      - redis
