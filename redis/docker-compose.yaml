@@ -3,8 +3,6 @@ services:
   some_redis:
     container_name: some_redis
     image: redis:6.2
-    environment:
-      - PATH=/usr/local/bin:$PATH
     volumes:
       - /data/soft/redis/conf:/usr/local/etc/redis
       - /data1/service_data/redis/data:/data
