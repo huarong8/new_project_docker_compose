@@ -2,12 +2,13 @@ version: "3"
 services:
   some_redis:
     container_name: some_redis
-    image: redis:6.0.16
+    image: redis:6.2
+    environment:
+      - PATH=/usr/local/bin:$PATH
     volumes:
-      - ./conf:/usr/local/
+      - /data/soft/redis/conf:/usr/local/etc/redis
+      - /data1/service_data/redis/data:/data
     ports:
-      - "6379:6379"
+      - 6379:6379
     restart: always
-    command: redis-server /usr/local/redis.conf
-
-
+    command: redis-server /usr/local/etc/redis/redis.conf
